@@ -1,0 +1,69 @@
+{% extends 'index.html' %}
+
+{% block content  %}
+<style>
+#pic {
+  border-radius: 50%;
+}
+</style>
+
+<div class="container">
+<h1>{{user.username}} </h1><br>
+<img id="pic" src="{{user.profile_pic.url}}" width="100px" height="100px"><br>
+<br>
+{{user.first_name}}  {{user.last_name}}
+<br>
+<br>
+<a class="btn btn-outline-info" href="{% url 'edit_profile_url' user.id %}">edit profile</a>
+<br>
+<br>
+<br>
+{% for post in user_post %}
+<div class="card text-white bg-warning mb-3" style="max-width: 30rem;">
+    
+  <div class="card-header">{{post.title}}</div>
+
+  <div class="card-body">
+  {{post.content}}<br>
+  <img src="{{post.image.url}}" width="100px" height="100px">
+  </div>
+
+
+  <div class="card-footer">
+  <span class="like_count">{{post.likes}}</span>
+  <span class="like_unlike" onclick="like_unlike.call(this,{{post.id}})" >Like</span><br>
+  <a class="btn btn-secondary" href="{% url 'delete_post' post.id %}">delete</a>
+  
+  <a class="btn btn-secondary" href="{% url 'edit_post_url' post.id %}">edit</a>
+  </div>
+</div>
+{% endfor %}
+</div>
+<script> 
+function like_unlike(post_id)
+    {
+        like_unlike_el = $(this);
+
+        like_count_el = like_unlike_el.closest('.card-footer').find('.like_count');
+
+        $.get( "http://127.0.0.1:8000/accounts/like_unlike_post/" + post_id+"/", function( data ) 
+        {
+                //add_to_el.html( '<div onclick="get_posts()">' + data.name + '</div>' );
+            if(data.liked)
+            {
+                like_unlike_el.addClass('active');
+            }
+            else   
+            {
+                like_unlike_el.removeClass('active');
+            }
+            like_count_el.text(data.likes);
+        }, "json" );
+    }
+</script>
+<style>
+    .active {
+        color: blue;
+    }
+</style>
+{% endblock %}

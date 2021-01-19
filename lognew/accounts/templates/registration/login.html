@@ -1,0 +1,16 @@
+{% extends 'index.html' %}
+{% block content %}
+    <div class="container">
+    <h1 align="center"> Sign In </h1>
+    <form method="POST">
+      {% csrf_token %}
+      
+      {{form.as_p}}
+      
+    <button type="submit" class="btn btn-success">Login</button>
+    <button type="button" onclick="location.href='{% url 'register_url' %}'" class="btn btn-success">Register</button>
+    </form>
+    <u><a class="nav item nav-link" href="{% url 'password_reset_url' %}">Forgot Pasword</a></u>
+    </div>
+
+{% endblock content %}

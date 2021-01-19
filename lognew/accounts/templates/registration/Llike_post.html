@@ -1,0 +1,62 @@
+<!DOCTYPE HTML>
+
+<html>
+
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>Your Website</title>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <script>
+        window.addEventListener("load", function() {
+            get_posts();
+        });
+
+        function get_posts() {
+
+            function get_post_html(_post) {
+                return '<div class="post" onclick="get_user.call(this,'+ _post.userId +')"><div class="user"></div><div class="title">'
+                    +_post.title
+                    +'</div><div class="content">'
+                    +_post.body
+                    +'</div></div><br>'
+            }
+
+            $.get( "http://127.0.0.1:8000/accounts/all_post/", function( data ) {
+                $.each( data, function( index, obj ) {
+                    $( "body" ).append( get_post_html(obj) );
+                })
+            }, "json" );
+
+        }
+
+        function get_user(user_id) {
+            el = $(this);
+            add_to_el = el.find('.user');
+
+            add_to_el.toggleClass('active');
+
+            // if ( ! add_to_el.hasClass('active')){
+            //     add_to_el.addClass('active');
+            // } else {
+            //     add_to_el.removeClass('active');
+            // }
+
+            $.get( "https:///users/" + user_id, function( data ) {
+                add_to_el.html( '<div onclick="get_posts()">' + data.name + '</div>' );
+            }, "json" );
+        }
+    </script>
+
+    <style>
+        .active {
+            color: blue;
+        }
+    </style>
+</head>
+
+<body>
+</body>
+
+</html>

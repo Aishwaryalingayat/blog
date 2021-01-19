@@ -1,0 +1,60 @@
+{% extends 'index.html' %}
+
+{% block content  %}
+<div class="container">
+<h1>All Post</h1>
+
+{% for post in all_post %}
+    <div class="card text-white bg-danger mb-3" style="max-width: 30rem;">
+
+    <div class="card-header">
+    <div class="card-text" align="right"> user: {{post.user.username}}</div>
+          {{post.title}} {{post.id}}
+    </div>
+
+    <div class="card-body">{{post.content}}
+    <br>
+    <img src="{{post.image.url}}" width="100px" height="100px">
+    </div>
+        <div class="card-footer">
+        <span class="like_count">{{post.likes}}</span>
+        <span class="like_unlike" onclick="like_unlike.call(this,{{post.id}})" >Like</span>
+        <br>
+        {% if current_user_id == post.user.id %}
+            <a class="btn btn-primary" href="{% url 'delete_post' post.id %}">delete</a>
+            <a class="btn btn-primary" href="{% url 'edit_post_url' post.id %}">edit</a>
+        {% endif %}
+        </div>
+
+    </div>
+{% endfor %}
+</div>
+
+<script> 
+function like_unlike(post_id)
+    {
+        like_unlike_el = $(this);
+
+        like_count_el = like_unlike_el.closest('.card-footer').find('.like_count');
+
+        $.get( "http://127.0.0.1:8000/accounts/like_unlike_post/" + post_id+"/", function( data ) 
+        {
+                //add_to_el.html( '<div onclick="get_posts()">' + data.name + '</div>' );
+            if(data.liked)
+            {
+                like_unlike_el.addClass('active');
+            }
+            else   
+            {
+                like_unlike_el.removeClass('active');
+            }
+            like_count_el.text(data.likes);
+        }, "json" );
+    }
+</script>
+<style>
+    .active {
+        color: blue;
+    }
+</style>
+{% endblock %}

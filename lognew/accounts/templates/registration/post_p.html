@@ -1,0 +1,10 @@
+{% extends 'index.html' %}
+
+{% block content  %}
+<div align="center" class="container">
+<h1>{{selected_post.title}}</h1>
+<p>{{selected_post.content}}</p>
+<a href="{% url 'delete_post' selected_post.id %}">delete</a>
+<hr>
+</div>
+{% endblock %}

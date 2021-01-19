@@ -1,0 +1,18 @@
+{% extends 'index.html' %}
+{% block content %}
+<div class="container">
+    <h1 align="center">Create your post here</h1>
+
+        <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <p>Title:</p>
+        <input type="text" name="title"><br>
+        <p>Image:</P>
+        <input type="file" type="file" name="pic">
+        <p>Content:</p>
+        <textarea name="content"> </textarea><br>
+        <button type="submit" class="btn btn-success">Create post</button>
+        </form>
+        
+</div>
+{% endblock content %}
